@@ -19,6 +19,18 @@ public class DateTimeUtil {
     private DateTimeUtil() {
     }
 
+    public static LocalDateTime adjustStartDateTime(LocalDate localDate) {
+        return adjustDateTime(localDate, MIN_DATE, LocalTime.MIN);
+    }
+
+    public static LocalDateTime adjustEndDateTime(LocalDate localDate) {
+        return adjustDateTime(localDate, MAX_DATE, LocalTime.MAX);
+    }
+
+    private static LocalDateTime adjustDateTime(LocalDate localDate, LocalDate defaultDate, LocalTime adjustTime) {
+        return LocalDateTime.of(localDate != null ? localDate : defaultDate, adjustTime);
+    }
+
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
@@ -39,8 +51,20 @@ public class DateTimeUtil {
         return startOfDay(localDate != null ? localDate.plus(1, ChronoUnit.DAYS) : MAX_DATE);
     }
 
+    public static LocalDateTime getStartInclusive(LocalDateTime localDate) {
+        return startOfDay(localDate != null ? localDate : LocalDateTime.of(MIN_DATE,LocalTime.MIN));
+    }
+
+    public static LocalDateTime getEndExclusive(LocalDateTime localDate) {
+        return startOfDay(localDate != null ? localDate.plus(1, ChronoUnit.DAYS) : LocalDateTime.of(MAX_DATE,LocalTime.MAX));
+    }
+
     private static LocalDateTime startOfDay(LocalDate localDate) {
         return LocalDateTime.of(localDate, LocalTime.MIN);
+    }
+
+    private static LocalDateTime startOfDay(LocalDateTime localDate) {
+        return localDate;
     }
 }
 

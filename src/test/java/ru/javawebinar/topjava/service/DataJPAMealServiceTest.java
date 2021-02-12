@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 
 @ActiveProfiles({"datajpa","datajpa_jpa"})
@@ -111,6 +111,19 @@ public class DataJPAMealServiceTest extends AbstractMealServiceTest {
     @Test
     public void getBetweenWithNullDates() throws Exception {
         assertMatch(service.getBetweenDates(null, null, USER_ID), MEALS);
+    }
+
+    @Test
+    public void getByMealWithUser(){
+        Meal m=service.getByMealWithUser(MEAL1_ID, USER_ID);
+        assertMatch(m, MEAL1);
+        assertMatch(USER,m.getUser());
+    }
+
+    @Test
+    public void getByMealWithUserNotFound(){
+        thrown.expect(NotFoundException.class);
+        service.getByMealWithUser(MEAL1_ID, ADMIN_ID);
     }
 
 }
